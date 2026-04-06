@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LibraFlow</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="sidebar"></div>
+
+    <div class="md:ml-64 min-h-screen">
+        <!-- Topbar -->
+        <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+                    <p class="text-sm text-gray-500 mt-1">Overview of library books, users and active borrows.</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-indigo-600"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="p-6 max-w-7xl mx-auto">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8 fade-in">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-book text-2xl text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Total Books</h3>
+                            <p id="total-books" class="text-2xl font-bold text-gray-900">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-users text-2xl text-green-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Total Users</h3>
+                            <p id="total-users" class="text-2xl font-bold text-gray-900">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-exchange-alt text-2xl text-purple-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Active Borrows</h3>
+                            <p id="borrowed-books" class="text-2xl font-bold text-gray-900">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 max-w-4xl mx-auto">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Library Overview</h2>
+                <div class="relative h-80 w-full">
+                    <canvas id="overviewChart" class="w-full h-full"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        // Load components before page scripts so toast and sidebar exist before dashboard.js executes
+        fetch('../components/sidebar.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('sidebar').innerHTML = data);
+
+        fetch('../components/toast.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('toast').innerHTML = data);
+    </script>
+    <script src="../js/api.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

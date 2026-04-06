@@ -1,0 +1,37 @@
+<nav class="bg-white shadow-lg border-b border-gray-200">
+    <div class="container mx-auto px-6 py-4">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-book text-2xl text-indigo-600"></i>
+                <span class="text-2xl font-bold text-gray-800">LibraFlow</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="pages/index.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300 font-medium">Home</a>
+                <a href="pages/dashboard.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300 font-medium">Dashboard</a>
+                <a href="pages/books.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300 font-medium">Books</a>
+                <a href="pages/users.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300 font-medium">Users</a>
+                <a href="pages/borrow.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300 font-medium">Borrow</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-gray-200 pt-4">
+            <a href="pages/index.html" class="block py-2 text-gray-600 hover:text-indigo-600 transition-colors duration-300">Home</a>
+            <a href="pages/dashboard.html" class="block py-2 text-gray-600 hover:text-indigo-600 transition-colors duration-300">Dashboard</a>
+            <a href="pages/books.html" class="block py-2 text-gray-600 hover:text-indigo-600 transition-colors duration-300">Books</a>
+            <a href="pages/users.html" class="block py-2 text-gray-600 hover:text-indigo-600 transition-colors duration-300">Users</a>
+            <a href="pages/borrow.html" class="block py-2 text-gray-600 hover:text-indigo-600 transition-colors duration-300">Borrow</a>
+        </div>
+    </div>
+</nav>
+
+<script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    });
+</script>

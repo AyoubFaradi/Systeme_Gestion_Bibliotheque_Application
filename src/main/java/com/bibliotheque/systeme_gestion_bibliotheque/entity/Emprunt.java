@@ -1,6 +1,7 @@
 package com.bibliotheque.systeme_gestion_bibliotheque.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -46,4 +47,14 @@ public class Emprunt {
     @JoinColumn(name = "livre_id", nullable = false)
     @JsonBackReference("livre-emprunts")
     private Livre livre;
+
+    @JsonProperty("utilisateurId")
+    public Long getUtilisateurId() {
+        return utilisateur != null ? utilisateur.getId() : null;
+    }
+
+    @JsonProperty("livreId")
+    public Long getLivreId() {
+        return livre != null ? livre.getId() : null;
+    }
 }

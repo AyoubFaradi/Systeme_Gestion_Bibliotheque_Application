@@ -1,0 +1,54 @@
+<div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2">
+    <!-- Toasts will be inserted here -->
+</div>
+
+<script>
+    function showToast(message, type = 'success') {
+        const toastContainer = document.getElementById('toast-container');
+
+        const toast = document.createElement('div');
+        toast.className = `max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 transform transition-all duration-300 translate-x-full`;
+
+        const bgColor = type === 'success' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200';
+        const textColor = type === 'success' ? 'text-green-800' : 'text-red-800';
+        const iconColor = type === 'success' ? 'text-green-400' : 'text-red-400';
+        const icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+
+        toast.innerHTML = `
+            <div class="p-4 ${bgColor} border-l-4 ${type === 'success' ? 'border-green-400' : 'border-red-400'}">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="${icon} ${iconColor}"></i>
+                    </div>
+                    <div class="ml-3 w-0 flex-1 pt-0.5">
+                        <p class="text-sm font-medium ${textColor}">
+                            ${message}
+                        </p>
+                    </div>
+                    <div class="ml-4 flex-shrink-0 flex">
+                        <button onclick="this.parentElement.parentElement.parentElement.parentElement.remove()" class="inline-flex rounded-md ${bgColor} p-1.5 ${textColor} hover:${bgColor} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-${type === 'success' ? 'green' : 'red'}-500">
+                            <i class="fas fa-times text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        // Animate in
+        setTimeout(() => {
+            toast.classList.remove('translate-x-full');
+        }, 100);
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            toast.classList.add('translate-x-full');
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 300);
+        }, 5000);
+    }
+</script>

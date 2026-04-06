@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/emprunts")
 public class EmpruntController {
@@ -43,6 +44,12 @@ public class EmpruntController {
 
     @PostMapping("/{id}/return")
     public ResponseEntity<Emprunt> returnLivre(@PathVariable Long id) {
+        Emprunt emprunt = empruntService.returnBook(id);
+        return ResponseEntity.ok(emprunt);
+    }
+
+    @PostMapping("/return/{id}")
+    public ResponseEntity<Emprunt> returnLivreByPath(@PathVariable Long id) {
         Emprunt emprunt = empruntService.returnBook(id);
         return ResponseEntity.ok(emprunt);
     }
