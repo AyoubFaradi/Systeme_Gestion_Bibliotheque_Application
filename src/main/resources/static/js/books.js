@@ -85,9 +85,17 @@ function displayBooks(books) {
                     <p class="text-xs text-gray-500"><i class="fas fa-barcode mr-1"></i>${book.isbn}</p>
                 </div>
             </div>
-            <button onclick="borrowBookPrompt(${book.id})" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
-                <i class="fas fa-hand-holding mr-2"></i>Borrow Book
-            </button>
+            <div class="flex space-x-2">
+                <button onclick="viewBookDetails(${book.id})" class="flex-1 bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300 text-sm">
+                    <i class="fas fa-eye mr-1"></i>View
+                </button>
+                <button onclick="editBook(${book.id})" class="flex-1 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300 text-sm">
+                    <i class="fas fa-edit mr-1"></i>Edit
+                </button>
+                <button onclick="borrowBookPrompt(${book.id})" class="flex-1 bg-indigo-600 text-white px-3 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-sm">
+                    <i class="fas fa-hand-holding mr-1"></i>Borrow
+                </button>
+            </div>
         `;
         container.appendChild(bookCard);
     });
@@ -113,3 +121,79 @@ async function borrowBookFromPage(bookId, userId) {
         }
     }
 }
+// View Book Details
+async function viewBookDetails(bookId) {
+    try {
+        const book = await getBookById(bookId);
+        document.getElementById('view-book-title').textContent = book.titre;
+        document.getElementById('view-book-author').textContent = book.auteur;
+        document.getElementById('view-book-category').textContent = book.categorie;
+        document.getElementById('view-book-isbn').textContent = book.isbn;
+        document.getElementById('view-book-modal').classList.remove('hidden');
+    } catch (error) {
+        if (typeof showToast === 'function') {
+            showToast('Error loading book details: ' + error.message, 'error');
+        }
+    }
+}
+
+function closeViewBookModal() {
+    document.getElementById('view-book-modal').classList.add('hidden');
+}
+
+// Edit Book
+async function editBook(bookId) {
+    try {
+        const book = await getBookById(bookId);
+        document.getElementById('edit-book-id').value = book.id;
+        document.getElementById('edit-book-title').value = book.titre;
+        document.getElementById('edit-book-author').value = book.auteur;
+        document.getElementById('edit-book-category').value = book.categorie;
+        document.getElementById('edit-book-isbn').value = book.isbn;
+        document.getElementById('edit-book-modal').classList.remove('hidden');
+    } catch (error) {
+        if (typeof showToast === 'function') {
+            showToast('Error loading book for editing: ' + error.message, 'error');
+        }
+    }
+}
+
+function closeEditBookModal() {
+    document.getElementById('edit-book-modal').classList.add('hidden');
+}
+
+// Handle edit book form submission
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing code ...
+
+    // Edit book form
+    document.getElementById('edit-book-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const id = document.getElementById('edit-book-id').value;
+        const title = document.getElementById('edit-book-title').value;
+        const author = document.getElementById('edit-book-author').value;
+        const category = document.getElementById('edit-book-category').value;
+        const isbn = document.getElementById('edit-book-isbn').value;
+
+        const submitBtn = document.getElementById('edit-book-submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving...';
+
+        try {
+            await updateBook(id, { titre: title, auteur: author, categorie: category, isbn: isbn });
+            if (typeof showToast === 'function') {
+                showToast('Book updated successfully!', 'success');
+            }
+            closeEditBookModal();
+            loadBooks();
+        } catch (error) {
+            if (typeof showToast === 'function') {
+                showToast('Error updating book: ' + error.message, 'error');
+            }
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+    });
+});

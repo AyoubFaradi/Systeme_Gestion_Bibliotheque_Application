@@ -32,6 +32,21 @@ services:
     networks:
       - library-network
 
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+      PMA_DB: library_db
+    depends_on:
+      - mysql
+    networks:
+      - library-network
+
 volumes:
   mysql_data:
 

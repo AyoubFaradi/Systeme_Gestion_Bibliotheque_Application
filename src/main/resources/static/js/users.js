@@ -29,6 +29,29 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    // Edit user form
+    document.getElementById('edit-user-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const id = document.getElementById('edit-user-id').value;
+        const name = document.getElementById('edit-user-name').value;
+        const email = document.getElementById('edit-user-email').value;
+        const address = document.getElementById('edit-user-address').value;
+        const phone = document.getElementById('edit-user-phone').value;
+
+        try {
+            await updateUser(id, { nom: name, email: email, adresse: address, telephone: phone });
+            if (typeof showToast === 'function') {
+                showToast('User updated successfully!', 'success');
+            }
+            closeEditUserModal();
+            loadUsers();
+        } catch (error) {
+            if (typeof showToast === 'function') {
+                showToast('Error updating user: ' + error.message, 'error');
+            }
+        }
+    });
 });
 
 function closeModal() {
@@ -69,6 +92,16 @@ async function loadUsers() {
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     ${user.id}
                 </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex space-x-2">
+                        <button onclick="viewUserDetails(${user.id})" class="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors duration-300 text-xs">
+                            <i class="fas fa-eye mr-1"></i>View
+                        </button>
+                        <button onclick="editUser(${user.id})" class="bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700 transition-colors duration-300 text-xs">
+                            <i class="fas fa-edit mr-1"></i>Edit
+                        </button>
+                    </div>
+                </td>
             `;
             tbody.appendChild(row);
         });
@@ -78,4 +111,50 @@ async function loadUsers() {
             showToast('Error loading users', 'error');
         }
     }
+}
+
+// View user details
+async function viewUserDetails(userId) {
+    try {
+        const user = await getUserById(userId);
+        document.getElementById('view-user-name').textContent = user.nom;
+        document.getElementById('view-user-email').textContent = user.email;
+        document.getElementById('view-user-address').textContent = user.adresse || 'N/A';
+        document.getElementById('view-user-phone').textContent = user.telephone || 'N/A';
+        document.getElementById('view-user-id').textContent = user.id;
+        document.getElementById('view-user-modal').classList.remove('hidden');
+    } catch (error) {
+        console.error('Error loading user details:', error);
+        if (typeof showToast === 'function') {
+            showToast('Error loading user details', 'error');
+        }
+    }
+}
+
+// Edit user
+async function editUser(userId) {
+    try {
+        const user = await getUserById(userId);
+        document.getElementById('edit-user-id').value = user.id;
+        document.getElementById('edit-user-name').value = user.nom;
+        document.getElementById('edit-user-email').value = user.email;
+        document.getElementById('edit-user-address').value = user.adresse || '';
+        document.getElementById('edit-user-phone').value = user.telephone || '';
+        document.getElementById('edit-user-modal').classList.remove('hidden');
+    } catch (error) {
+        console.error('Error loading user for editing:', error);
+        if (typeof showToast === 'function') {
+            showToast('Error loading user for editing', 'error');
+        }
+    }
+}
+
+// Close view user modal
+function closeViewUserModal() {
+    document.getElementById('view-user-modal').classList.add('hidden');
+}
+
+// Close edit user modal
+function closeEditUserModal() {
+    document.getElementById('edit-user-modal').classList.add('hidden');
 }

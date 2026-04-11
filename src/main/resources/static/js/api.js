@@ -7,6 +7,12 @@ async function getBooks() {
     return await response.json();
 }
 
+async function getBookById(id) {
+    const response = await fetch(`${API_BASE_URL}/livres/${id}`);
+    if (!response.ok) throw new Error('Failed to fetch book');
+    return await response.json();
+}
+
 async function addBook(book) {
     const response = await fetch(`${API_BASE_URL}/livres`, {
         method: 'POST',
@@ -17,10 +23,26 @@ async function addBook(book) {
     return await response.json();
 }
 
+async function updateBook(id, book) {
+    const response = await fetch(`${API_BASE_URL}/livres/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(book)
+    });
+    if (!response.ok) throw new Error('Failed to update book');
+    return await response.json();
+}
+
 // Users
 async function getUsers() {
     const response = await fetch(`${API_BASE_URL}/utilisateurs`);
     if (!response.ok) throw new Error('Failed to fetch users');
+    return await response.json();
+}
+
+async function getUserById(id) {
+    const response = await fetch(`${API_BASE_URL}/utilisateurs/${id}`);
+    if (!response.ok) throw new Error('Failed to fetch user');
     return await response.json();
 }
 
@@ -31,6 +53,16 @@ async function addUser(user) {
         body: JSON.stringify(user)
     });
     if (!response.ok) throw new Error('Failed to add user');
+    return await response.json();
+}
+
+async function updateUser(id, user) {
+    const response = await fetch(`${API_BASE_URL}/utilisateurs/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
+    });
+    if (!response.ok) throw new Error('Failed to update user');
     return await response.json();
 }
 
