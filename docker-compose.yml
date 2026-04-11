@@ -31,7 +31,7 @@ services:
       retries: 10
     networks:
       - library-network
-
+      
   phpmyadmin:
     image: phpmyadmin:latest
     restart: always
