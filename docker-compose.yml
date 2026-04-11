@@ -46,7 +46,7 @@ services:
       - mysql
     networks:
       - library-network
-
+      
 volumes:
   mysql_data:
 
